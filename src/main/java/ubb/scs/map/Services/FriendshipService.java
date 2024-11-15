@@ -32,7 +32,7 @@ public class FriendshipService extends EntityService<Tuple<Long,Long>, Friendshi
     }
 
     private static void addEdge(Long source, Long destination, Map<Long, List<Long>> graph) {
-        graph.computeIfAbsent(source, _ -> new ArrayList<>()).add(destination);
+        graph.computeIfAbsent(source, x -> new ArrayList<>()).add(destination);
     }
 
     private static void dfs(Long node, Set<Long> visited, Map<Long, List<Long>> graph, boolean saveComponent, List<Long> currentComponent) {
