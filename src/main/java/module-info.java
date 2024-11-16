@@ -8,5 +8,7 @@ module ubb.scs.map {
 
     opens ubb.scs.map to javafx.fxml;
     exports ubb.scs.map to javafx.graphics;
+    exports ubb.scs.map.Controllers to javafx.graphics;
+    opens ubb.scs.map.Controllers to javafx.fxml;
 
 }

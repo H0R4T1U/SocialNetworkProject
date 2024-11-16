@@ -1,4 +1,4 @@
-package ubb.scs.map;
+package ubb.scs.map.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
