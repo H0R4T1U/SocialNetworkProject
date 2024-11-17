@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
-    private static final String FIND_ONE_QUERY = "select * from \"User\" where id=?";
-    private static final String FIND_ALL_QUERY = "select * from \"User\"";
-    private static final String SAVE_QUERY = "insert into \"User\" (\"id\",\"username\",\"password\",\"phone\",\"joindate\",\"age\" )  values(?,?,?,?,?,?)";
-    private static final String DELETE_QUERY = "delete from \"User\" where id=?";
 
     public UserDatabaseRepository(String url, String username, String password, Validator<User> validator) {
         super(url, username, password, validator);
@@ -21,6 +17,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
 
     @Override
     public Optional<User> findOne(Long id) {
+        String FIND_ONE_QUERY = "select * from \"User\" where id=?";
         try (Connection connection = createConnection();
              PreparedStatement ps = connection.prepareStatement(FIND_ONE_QUERY)) {
             ps.setLong(1, id);
@@ -36,6 +33,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     @Override
     public Iterable<User> findAll() {
         List<User> users = new ArrayList<>();
+        String FIND_ALL_QUERY = "select * from \"User\"";
         try (Connection connection = createConnection();
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_QUERY);
              ResultSet resultSet = ps.executeQuery()) {
@@ -50,6 +48,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     @Override
     public Optional<User> save(User user) {
         validator.validate(user);
+        String SAVE_QUERY = "insert into \"User\" (\"id\",\"username\",\"password\",\"phone\",\"joindate\",\"age\" )  values(?,?,?,?,?,?)";
         try (Connection connection = createConnection();
              PreparedStatement ps = connection.prepareStatement(SAVE_QUERY)) {
             ps.setLong(1, user.getId());
@@ -68,6 +67,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     @Override
     public Optional<User> delete(Long id) {
         Optional<User> user = findOne(id);
+        String DELETE_QUERY = "delete from \"User\" where id=?";
         try (Connection connection = createConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_QUERY)) {
             ps.setLong(1, id);

@@ -13,8 +13,8 @@ import java.util.Set;
 public class NetworkService {
     private final UserService userService;
     private final FriendshipService friendshipService;
-    public NetworkService(UserService userService, FriendshipService friendshipService) {
-        this.userService = userService;
+    public NetworkService(FriendshipService friendshipService) {
+        this.userService = UserService.getInstance();
         this.friendshipService = friendshipService;
     }
     public List<Set<Long>> getCommunityGraph() {

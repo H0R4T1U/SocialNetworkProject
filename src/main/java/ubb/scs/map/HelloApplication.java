@@ -3,8 +3,11 @@ package ubb.scs.map;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ubb.scs.map.Controllers.LoginController;
+import ubb.scs.map.Controllers.MainWindowController;
+import ubb.scs.map.Controllers.ScreenController;
 import ubb.scs.map.Domain.Friendship;
 import ubb.scs.map.Domain.Tuple;
 import ubb.scs.map.Domain.User;
@@ -26,18 +29,27 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         Repository<Long, User> userRepository = new UserDatabaseRepository(ApplicationContext.getPROPERTIES().getProperty("DB_URL"),ApplicationContext.getPROPERTIES().getProperty("DB_USERNAME"),ApplicationContext.getPROPERTIES().getProperty("DB_PASSWORD"),new UserValidator());
         Repository<Tuple<Long, Long>, Friendship> friendRepository = new FriendshipDatabaseRepository(ApplicationContext.getPROPERTIES().getProperty("DB_URL"),ApplicationContext.getPROPERTIES().getProperty("DB_USERNAME"),ApplicationContext.getPROPERTIES().getProperty("DB_PASSWORD"),new FriendshipValidator());
-        UserService userService = new UserService(userRepository);
-        FriendshipService friendshipService = new FriendshipService(friendRepository,userService);
-        NetworkService networkService = new NetworkService(userService,friendshipService);
+        UserService userService = UserService.getInstance();
+        userService.setRepository(userRepository);
+        FriendshipService friendshipService = new FriendshipService(friendRepository);
+        NetworkService networkService = new NetworkService(friendshipService);
+        StackPane root = new StackPane();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Views/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(root,800, 600);
+        ScreenController screenController = new ScreenController(scene);
+        // preparing loading screen
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("Views/login.fxml"));
+        loginLoader.setController(new LoginController(screenController)); // Set the custom controller for login
+        // preparing main window
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("Views/mainWindow.fxml"));
+        mainLoader.setController(new MainWindowController(friendshipService));
+        //screenController.addScreen("home",FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Views/hello-view.fxml"))));
 
-        LoginController loginController = fxmlLoader.getController();
-        loginController.setService(userService);
+        screenController.addScreen("login",loginLoader);
+        screenController.addScreen("main",mainLoader);
+        screenController.activate("login");
 
-        String css = Objects.requireNonNull(this.getClass().getResource("css/main.css")).toExternalForm();
-        scene.getStylesheets().add(css);
+
 
         stage.setTitle("Hello!");
         stage.setScene(scene);

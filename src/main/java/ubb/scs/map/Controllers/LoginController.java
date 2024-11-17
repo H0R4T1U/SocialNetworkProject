@@ -7,6 +7,7 @@ import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
 import ubb.scs.map.Services.UserService;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class LoginController {
@@ -14,21 +15,24 @@ public class LoginController {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
-    UserService service;
+    private final UserService service = UserService.getInstance();
+    private final ScreenController screenController;
 
-    public void setService(UserService service) {
-        this.service = service;
+    public LoginController(ScreenController screenController) {
+        this.screenController = screenController;
     }
 
+
     @FXML
-    protected void Login() {
+    protected void Login() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
         Optional<User> user = service.findByUsername(username);
         if (user.isPresent()) {
             if(user.get().getPassword().equals(password)) {
-                UserInstance.getInstance(username);
+                UserInstance.getInstance(user.get().getId());
                 System.out.println(user.get().getUsername() + " Logged in!");
+                screenController.activate("main");
             }
         }else{
             System.out.println("Invalid username or password!");

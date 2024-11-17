@@ -5,28 +5,29 @@ import ubb.scs.map.Repository.Repository;
 
 import java.util.Optional;
 
-public class EntityService<ID, E extends Entity<ID>> {
-    protected Repository<ID, E> repo;
+public interface EntityService<ID, E extends Entity<ID>> {
 
-    public EntityService(Repository<ID, E> repository) {
-        this.repo = repository;
+    // Abstract method to provide the repository
+    Repository<ID, E> getRepo();
+
+    // Default methods for CRUD operations
+    default Optional<E> create(E entity) {
+        return getRepo().save(entity);
     }
 
-    public Optional<E> create(E entity) {
-        return repo.save(entity);
+    default Optional<E> update(E entity) {
+        return getRepo().update(entity);
     }
 
-    public Optional<E> update(E entity) {
-        return repo.update(entity);
+    default Optional<E> delete(ID entityId) {
+        return getRepo().delete(entityId);
     }
 
-    public Optional<E> delete(ID entityId) {
-        return repo.delete(entityId);
+    default Iterable<E> getAll() {
+        return getRepo().findAll();
     }
 
-    public Iterable<E> getAll() {
-        return repo.findAll();
+    default Optional<E> getById(ID entityId) {
+        return getRepo().findOne(entityId);
     }
-
-    public Optional<E> getById(ID entityId) {return repo.findOne(entityId);}
 }
