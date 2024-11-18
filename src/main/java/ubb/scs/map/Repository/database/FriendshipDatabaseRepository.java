@@ -7,10 +7,11 @@ import ubb.scs.map.Domain.validators.Validator;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-// TODO adauga noi parametri + baza de date
+
 // TODO FriendRequest
 // TODO Add/Remove friend buttons
 // TODO fa o sa arate frumos
@@ -62,7 +63,7 @@ public class FriendshipDatabaseRepository extends DatabaseRepository<Tuple<Long,
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY)) {
             preparedStatement.setLong(1, friendship.getId().getE1());
             preparedStatement.setLong(2, friendship.getId().getE2());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(friendship.getDate()));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(friendship.getDate()));
             preparedStatement.setString(4, friendship.getUser1());
             preparedStatement.setString(5, friendship.getUser2());
             preparedStatement.execute();
@@ -95,17 +96,15 @@ public class FriendshipDatabaseRepository extends DatabaseRepository<Tuple<Long,
         return Optional.empty();
     }
 
-    private Connection prepareConnection() throws SQLException {
-        return DriverManager.getConnection(getUrl(), getUsername(), getPassword());
-    }
 
     private Friendship mapToFriendship(ResultSet resultSet) throws SQLException {
         Tuple<Long, Long> id = new Tuple<>(resultSet.getLong("ID1"), resultSet.getLong("ID2"));
-        Friendship friendship = new Friendship();
+        LocalDateTime requestDate = resultSet.getTimestamp("Date").toLocalDateTime();
+        String user1 = resultSet.getString("User1");
+        String user2 = resultSet.getString("User2");
+        Friendship friendship = new Friendship(requestDate, user1, user2);
         friendship.setId(id);
-        friendship.setDate(resultSet.getDate("Date").toLocalDate());
-        friendship.setUser1(resultSet.getString("User1"));
-        friendship.setUser2(resultSet.getString("User2"));
+
 
         return friendship;
     }

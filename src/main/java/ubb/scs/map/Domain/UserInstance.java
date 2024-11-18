@@ -2,23 +2,25 @@ package ubb.scs.map.Domain;
 
 public class UserInstance {
     private static UserInstance instance;
-    private final Long id;
+    private Long id;
 
     public UserInstance(Long id) {
         this.id = id;
     }
 
-    public static UserInstance getInstance(Long id) {
+    public static UserInstance getInstance() {
         if (instance == null) {
-            instance = new UserInstance(id);
+            instance = new UserInstance((long)-1);
         }
         return instance;
     }
-    public static UserInstance getInstance() {
-        return instance;
-    }
+
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

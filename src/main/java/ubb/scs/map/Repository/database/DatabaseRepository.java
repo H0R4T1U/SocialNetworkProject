@@ -4,6 +4,9 @@ import ubb.scs.map.Domain.Entity;
 import ubb.scs.map.Domain.validators.Validator;
 import ubb.scs.map.Repository.Repository;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class DatabaseRepository<ID, E extends Entity<ID>> implements Repository<ID,E> {
@@ -18,7 +21,9 @@ public class DatabaseRepository<ID, E extends Entity<ID>> implements Repository<
         this.password = password;
         this.validator = validator;
     }
-
+    Connection prepareConnection() throws SQLException {
+        return DriverManager.getConnection(getUrl(), getUsername(), getPassword());
+    }
     public String getUrl() {
         return url;
     }

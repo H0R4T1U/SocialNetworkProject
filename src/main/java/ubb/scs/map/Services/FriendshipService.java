@@ -9,21 +9,30 @@ import ubb.scs.map.Utils.observer.Observer;
 import ubb.scs.map.Utils.observer.Observable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static java.util.stream.DoubleStream.concat;
 
 public class FriendshipService implements EntityService<Tuple<Long,Long>, Friendship>,
         Observable<FriendshipEntityChangeEvent>{
-    private final UserService userService;
-    private final Repository<Tuple<Long,Long>,Friendship> repo;
+
+    private static FriendshipService instance = new FriendshipService();
+    private final UserService userService = UserService.getInstance();
+    private Repository<Tuple<Long,Long>,Friendship> repo;
+
     private final List<Observer<FriendshipEntityChangeEvent>> observers = new ArrayList<>();
 
-    public FriendshipService(Repository<Tuple<Long,Long>, Friendship> repository) {
-        this.repo = repository;
-        this.userService = UserService.getInstance();
+    private FriendshipService() {}
+    public static synchronized FriendshipService getInstance() {
+        if(instance == null) {
+            instance = new FriendshipService();
+        }
+        return instance;
     }
+
+    public void setRepo(Repository<Tuple<Long, Long>, Friendship> repo) {
+        this.repo = repo;
+    }
+
     public void deletedUser(Long id){
         List<Friendship> friendships = new ArrayList<>((Collection<Friendship>) getAll());
         friendships.forEach(friendship -> {

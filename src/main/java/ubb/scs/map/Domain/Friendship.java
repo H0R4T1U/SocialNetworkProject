@@ -1,24 +1,23 @@
 package ubb.scs.map.Domain;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Friendship extends Entity<Tuple<Long,Long>> {
-    LocalDate date;
+    private final LocalDateTime date;
     String user1;
     String user2;
 
-    public Friendship() {
-
+    public Friendship(LocalDateTime dateSent,String user1, String user2) {
+        this.date = dateSent;
+        this.user1 = user1;
+        this.user2 = user2;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     public String getUser1() {
         return user1;

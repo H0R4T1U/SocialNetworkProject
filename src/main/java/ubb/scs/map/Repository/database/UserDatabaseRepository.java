@@ -18,7 +18,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     @Override
     public Optional<User> findOne(Long id) {
         String FIND_ONE_QUERY = "select * from \"User\" where id=?";
-        try (Connection connection = createConnection();
+        try (Connection connection = prepareConnection();
              PreparedStatement ps = connection.prepareStatement(FIND_ONE_QUERY)) {
             ps.setLong(1, id);
             ResultSet resultSet = ps.executeQuery();
@@ -34,7 +34,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     public Iterable<User> findAll() {
         List<User> users = new ArrayList<>();
         String FIND_ALL_QUERY = "select * from \"User\"";
-        try (Connection connection = createConnection();
+        try (Connection connection = prepareConnection();
              PreparedStatement ps = connection.prepareStatement(FIND_ALL_QUERY);
              ResultSet resultSet = ps.executeQuery()) {
             while (resultSet.next())
@@ -49,7 +49,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     public Optional<User> save(User user) {
         validator.validate(user);
         String SAVE_QUERY = "insert into \"User\" (\"id\",\"username\",\"password\",\"phone\",\"joindate\",\"age\" )  values(?,?,?,?,?,?)";
-        try (Connection connection = createConnection();
+        try (Connection connection = prepareConnection();
              PreparedStatement ps = connection.prepareStatement(SAVE_QUERY)) {
             ps.setLong(1, user.getId());
             ps.setString(2, user.getUsername());
@@ -68,7 +68,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     public Optional<User> delete(Long id) {
         Optional<User> user = findOne(id);
         String DELETE_QUERY = "delete from \"User\" where id=?";
-        try (Connection connection = createConnection();
+        try (Connection connection = prepareConnection();
              PreparedStatement ps = connection.prepareStatement(DELETE_QUERY)) {
             ps.setLong(1, id);
             ps.execute();
@@ -83,9 +83,7 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
         return Optional.empty();
     }
 
-    private Connection createConnection() throws SQLException {
-        return DriverManager.getConnection(getUrl(), getUsername(), getPassword());
-    }
+
 
     private User createUser(ResultSet resultSet) throws SQLException {
         User user =  new User(resultSet.getString(2), resultSet.getString(3),resultSet.getString(4), LocalDateTime.parse(resultSet.getString(6)),resultSet.getInt(5));

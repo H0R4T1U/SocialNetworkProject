@@ -1,5 +1,5 @@
 package ubb.scs.map.Utils.events;
 
 public enum ChangeEventType {
-    ADD,UPDATE,DELETE
+    ADD,UPDATE,DELETE,LOGIN
 }
