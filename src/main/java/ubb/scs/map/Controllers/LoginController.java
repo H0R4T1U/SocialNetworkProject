@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 
 public class LoginController extends ControllerSuperclass {
     @FXML
@@ -17,7 +16,7 @@ public class LoginController extends ControllerSuperclass {
 
 
     @FXML
-    protected void login() throws IOException {
+    protected void login() {
         String username = usernameField.getText();
         String password = passwordField.getText();
         usernameField.clear();
@@ -31,7 +30,7 @@ public class LoginController extends ControllerSuperclass {
 
     }
     @FXML
-    protected void register() throws IOException {
+    protected void register() {
         service.switchScene("register");
     }
 }

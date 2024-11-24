@@ -28,4 +28,7 @@ module ubb.scs.map {
     opens ubb.scs.map.Utils to javafx.graphics;
     exports ubb.scs.map.Utils to javafx.graphics;
 
+    opens ubb.scs.map.Utils.observer to javafx.graphics;
+    exports ubb.scs.map.Utils.observer to javafx.graphics;
+
 }

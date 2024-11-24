@@ -2,7 +2,6 @@ package ubb.scs.map.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -100,7 +99,7 @@ public class MessageController extends ControllerSuperclass implements Observer 
         currentUser.ifPresent(user -> allMessages.addAll(service.getMessages(user.getId(), chatterId)));
     }
     @FXML
-    protected void sendMessage(ActionEvent actionEvent) {
+    protected void sendMessage( ) {
         Long currentUser =UserInstance.getInstance().getId();
         Friendship x = chats.getSelectionModel().getSelectedItem();
         Long chatterId = Objects.equals(x.getId().getE1(), currentUser) ? x.getId().getE2() : x.getId().getE1();

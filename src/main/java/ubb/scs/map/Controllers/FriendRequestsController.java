@@ -2,7 +2,6 @@ package ubb.scs.map.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -10,9 +9,7 @@ import ubb.scs.map.Domain.Friendship;
 import ubb.scs.map.Domain.FriendshipRequest;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
-import ubb.scs.map.Services.FriendshipRequestService;
-import ubb.scs.map.Services.ScreenService;
-import ubb.scs.map.Services.UserService;
+
 import ubb.scs.map.Utils.observer.ObservableType;
 import ubb.scs.map.Utils.observer.Observer;
 
@@ -59,9 +56,9 @@ public class FriendRequestsController extends ControllerSuperclass implements Ob
         listViewRequests.setItems(requestList);
     }
     @FXML
-    protected void handleButtonAcceptRequestClicked(ActionEvent actionEvent) {
+    protected void handleButtonAcceptRequestClicked() {
         var selectedItems = listViewRequests.getSelectionModel().getSelectedItems();
-        FriendshipRequest friendshipRequest = (FriendshipRequest) selectedItems.getFirst();
+        FriendshipRequest friendshipRequest =  selectedItems.getFirst();
         String user1 = service.getUserById(friendshipRequest.getSender()).get().getUsername();
         String user2 = service.getUserById(friendshipRequest.getReceiver()).get().getUsername();
         Friendship fr = new Friendship(LocalDateTime.now(),user1,user2);
@@ -72,14 +69,14 @@ public class FriendRequestsController extends ControllerSuperclass implements Ob
 
     }
     @FXML
-    protected void handleButtonDeleteRequestClicked(ActionEvent actionEvent) {
+    protected void handleButtonDeleteRequestClicked( ) {
         var selectedItems = listViewRequests.getSelectionModel().getSelectedItems();
-        FriendshipRequest friendshipRequest = (FriendshipRequest) selectedItems.getFirst();
+        FriendshipRequest friendshipRequest =  selectedItems.getFirst();
         requestList.remove(friendshipRequest);
         service.removeFriendshipRequest(friendshipRequest);
     }
     @FXML
-    protected void backToMain(ActionEvent actionEvent) {
+    protected void backToMain() {
         service.switchScene("main");
     }
 

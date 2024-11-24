@@ -19,7 +19,7 @@ public class NetworkService {
     }
     public List<Set<Long>> getCommunityGraph() {
         Graph<Long, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-        userService.getAll().forEach(user -> {graph.addVertex(user.getId());});
+        userService.getAll().forEach(user -> graph.addVertex(user.getId()));
         friendshipService.getAll()
                 .forEach(friendship -> graph
                         .addEdge(friendship.getId().getE1(),friendship.getId().getE2()));

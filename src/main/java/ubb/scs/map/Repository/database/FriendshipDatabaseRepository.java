@@ -6,15 +6,12 @@ import ubb.scs.map.Domain.Tuple;
 import ubb.scs.map.Domain.validators.Validator;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// TODO FriendRequest
-// TODO Add/Remove friend buttons
-// TODO fa o sa arate frumos
+
 public class FriendshipDatabaseRepository extends DatabaseRepository<Tuple<Long, Long>, Friendship> {
 
     public FriendshipDatabaseRepository(String url, String username, String password, Validator<Friendship> validator) {

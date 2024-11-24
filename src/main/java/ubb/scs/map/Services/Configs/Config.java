@@ -1,11 +1,8 @@
 package ubb.scs.map.Services.Configs;
 
-import ubb.scs.map.HelloApplication;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Properties;
 
 public class Config {

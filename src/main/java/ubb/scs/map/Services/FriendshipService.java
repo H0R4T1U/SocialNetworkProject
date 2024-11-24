@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 public class FriendshipService implements EntityService<Tuple<Long,Long>, Friendship>,
         Observable{
 
-    private Repository<Tuple<Long,Long>,Friendship> repo;
+    private final Repository<Tuple<Long,Long>,Friendship> repo;
 
     private final List<Observer> observers = new ArrayList<>();
 
@@ -90,6 +90,6 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
 
     @Override
     public void notifyObservers() {
-        observers.forEach(x-> x.update());
+        observers.forEach(Observer::update);
     }
 }

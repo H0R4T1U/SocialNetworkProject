@@ -2,7 +2,6 @@ package ubb.scs.map.Repository.database;
 
 import ubb.scs.map.Domain.FriendshipRequest;
 import ubb.scs.map.Domain.Tuple;
-import ubb.scs.map.Domain.validators.FriendshipValidator;
 import ubb.scs.map.Domain.validators.Validator;
 
 import java.sql.*;

@@ -65,6 +65,6 @@ public class FriendshipRequestService implements Observable {
 
     @Override
     public void notifyObservers() {
-        observers.forEach(observer -> observer.update());
+        observers.forEach(Observer::update);
     }
 }

@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 public class UserService implements EntityService<Long, User>,
         Observable {
 
-    private Repository<Long,User> repository;
+    private final Repository<Long,User> repository;
     private final List<Observer> observers = new ArrayList<>();
 
     public UserService(Repository<Long,User> repository) {
@@ -98,6 +98,6 @@ public class UserService implements EntityService<Long, User>,
 
     @Override
     public void notifyObservers() {
-        observers.forEach(x->x.update());
+        observers.forEach(Observer::update);
     }
 }
