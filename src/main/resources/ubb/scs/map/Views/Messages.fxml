@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1000.0" stylesheets="../css/mainWindow.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.scs.map.Controllers.MessageController">
+    <SplitPane dividerPositions="0.29797979797979796" prefHeight="440.0" prefWidth="709.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="175.0">
+            <VBox prefHeight="483.0" prefWidth="207.0">
+                <ListView fx:id="chats" prefHeight="398.0" prefWidth="203.0" styleClass="styled-list" />
+            </VBox>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="467.0" prefWidth="493.0">
+            <VBox prefHeight="439.0" prefWidth="493.0">
+                <ListView fx:id="messages" prefHeight="397.0" prefWidth="423.0" styleClass="styled-list" />
+                <HBox prefHeight="42.0" prefWidth="276.0">
+                    <TextArea fx:id="messageBox" prefHeight="42.0" prefWidth="404.0" promptText="Your message" />
+                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#sendMessage" prefHeight="42.0" prefWidth="96.0" styleClass="add-button" text="SEND" />
+                </HBox>
+            </VBox>
+        </AnchorPane>
+    </SplitPane>
+</AnchorPane>

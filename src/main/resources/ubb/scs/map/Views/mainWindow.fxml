@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1000.0" stylesheets="@../css/mainWindow.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.scs.map.Controllers.MainWindowController">
+<AnchorPane prefHeight="1000.0" prefWidth="1000.0" styleClass="header" stylesheets="@../css/mainWindow.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.scs.map.Controllers.MainWindowController">
     <!-- Logout Button -->
-    <Button onAction="#logout" styleClass="logout-button" text="Logout" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+    <Button onAction="#logout" styleClass="logout-button" text="Logout" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0">
+                <Image url="@../icons/user-secret.png" />
+            </ImageView>
+        </graphic>
+    </Button>
 
     <!-- Horizontally Centered SplitPane -->
-    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="800.0" prefWidth="850.0"
-               AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="50.0"
-               AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+    <SplitPane dividerPositions="0.5" layoutY="64.0" orientation="VERTICAL" prefHeight="886.0" prefWidth="785.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="115.0" AnchorPane.topAnchor="64.0">
 
         <!-- Top Pane -->
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" styleClass="table-section">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="754.0" styleClass="table-section">
             <!-- Title Label -->
-            <Label styleClass="header" text="Friends:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <Label layoutX="343.0" layoutY="14.0" styleClass="header" text="FRIENDS" textAlignment="CENTER" AnchorPane.leftAnchor="343.0" AnchorPane.topAnchor="14.0">
+            <font>
+               <Font size="20.0" />
+            </font></Label>
 
             <!-- TableView -->
             <TableView fx:id="tableView" styleClass="styled-table" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="60.0">
                 <columns>
-                    <TableColumn fx:id="tableColumnName" prefWidth="350.0" styleClass="table-column" text="Name" />
+                    <TableColumn fx:id="tableColumnName" prefWidth="695.0" styleClass="table-column" text="Name" />
                 </columns>
             </TableView>
         </AnchorPane>
@@ -28,22 +37,49 @@
         <!-- Bottom Pane -->
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="850.0" styleClass="action-section">
             <VBox spacing="10">
-                <children>
-                    <HBox spacing="10" alignment="CENTER">
-                        <children>
-                            <!-- Search Bar -->
-                            <TextField prefWidth="100.0" fx:id="searchBar" promptText="Search..." styleClass="input-field" />
 
-                            <!-- Add Button -->
-                            <Button onAction="#addFriend" prefWidth="100.0" styleClass="login-button" text="Add" />
+                <HBox alignment="CENTER" spacing="10">
+                    <!-- Search Bar -->
+                    <TextField fx:id="searchBar" prefHeight="50.0" prefWidth="245.0" promptText="User" styleClass="input-field" />
 
-                            <!-- Delete Button -->
-                            <Button onAction="#removeFriend" prefWidth="100.0" styleClass="login-button" text="Delete" />
-                            <Button prefWidth="100.0" onAction="#toRequests" mnemonicParsing="false" text="Requests" styleClass="login-button" />
-                        </children>
-                    </HBox>
-                </children>
+                    <!-- Add Button -->
+                    <Button minWidth="171.0" onAction="#addFriend" prefHeight="50.0" prefWidth="245.0" styleClass="add-button" text="Add">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0">
+                                <Image url="@../icons/user-plus.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
 
+                    <!-- Delete Button -->
+                    <Button minWidth="171.0" onAction="#removeFriend" prefHeight="50.0" prefWidth="245.0" styleClass="remove-button" text="Delete">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0" styleClass="remove-button">
+                                <Image url="@../icons/user-minus.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="10">
+               <children>
+                  <Label prefHeight="28.0" prefWidth="245.0" text="Routes:" />
+                       <Button minWidth="165.0" mnemonicParsing="false" onAction="#toRequests" prefHeight="50.0" prefWidth="245.0" styleClass="default-button" text="Requests">
+                           <graphic>
+                               <ImageView fitHeight="20.0" fitWidth="20.0">
+                                   <Image url="@../icons/users.png" />
+                               </ImageView>
+                           </graphic>
+                       </Button>
+                  <Button minWidth="165.0" mnemonicParsing="false" onAction="#toMessages" prefHeight="50.0" prefWidth="245.0" styleClass="default-button" text="Messages">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                           <image>
+                              <Image url="@../icons/envelope-dot.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children></HBox>
             </VBox>
 
         </AnchorPane>

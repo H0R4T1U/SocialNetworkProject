@@ -1,14 +1,10 @@
 package ubb.scs.map.Services;
 
 
-import ubb.scs.map.Domain.Friendship;
 import ubb.scs.map.Domain.FriendshipRequest;
 import ubb.scs.map.Domain.Tuple;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Repository.Repository;
-import ubb.scs.map.Utils.events.ChangeEventType;
-import ubb.scs.map.Utils.events.FriendshipEntityChangeEvent;
-import ubb.scs.map.Utils.events.FriendshipRequestEntityChangeEvent;
 import ubb.scs.map.Utils.observer.Observable;
 import ubb.scs.map.Utils.observer.Observer;
 
@@ -16,10 +12,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendshipRequestService implements Observable<FriendshipRequestEntityChangeEvent> {
+public class FriendshipRequestService implements Observable {
     private final Repository<Tuple<Long, Long>, FriendshipRequest> requestRepository;
     private final FriendshipService friendshipService;
-    private final List<Observer<FriendshipRequestEntityChangeEvent>> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
     public FriendshipRequestService(Repository<Tuple<Long, Long>, FriendshipRequest> requestRepository, FriendshipService friendshipService) {
         this.requestRepository = requestRepository;
@@ -50,7 +46,7 @@ public class FriendshipRequestService implements Observable<FriendshipRequestEnt
             throw new ServiceException("You can't send a friend request twice!");
         }
         requestRepository.save(newRequest);
-        notifyObservers(new FriendshipRequestEntityChangeEvent(ChangeEventType.ADD, newRequest));
+        notifyObservers();
     }
 
     public void removeRequest(Long senderID, Long receiverID) {
@@ -58,17 +54,17 @@ public class FriendshipRequestService implements Observable<FriendshipRequestEnt
     }
 
     @Override
-    public void addObserver(Observer<FriendshipRequestEntityChangeEvent> e) {
+    public void addObserver(Observer e) {
         observers.add(e);
     }
 
     @Override
-    public void removeObserver(Observer<FriendshipRequestEntityChangeEvent> e) {
+    public void removeObserver(Observer e) {
         observers.remove(e);
     }
 
     @Override
-    public void notifyObservers(FriendshipRequestEntityChangeEvent t) {
-        observers.forEach(observer -> observer.update(t));
+    public void notifyObservers() {
+        observers.forEach(observer -> observer.update());
     }
 }

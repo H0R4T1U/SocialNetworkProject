@@ -13,17 +13,20 @@ import ubb.scs.map.Domain.UserInstance;
 import ubb.scs.map.Services.FriendshipRequestService;
 import ubb.scs.map.Services.ScreenService;
 import ubb.scs.map.Services.UserService;
+import ubb.scs.map.Utils.observer.ObservableType;
+import ubb.scs.map.Utils.observer.Observer;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class FriendRequestsController extends ControllerSuperclass {
+public class FriendRequestsController extends ControllerSuperclass implements Observer {
     @FXML
     private ListView<FriendshipRequest> listViewRequests;
 
 
     private ObservableList<FriendshipRequest> requestList;
     public void init() {
+        service.addObserver(this, ObservableType.REQUEST);
         listViewRequests.setCellFactory(param -> new ListCell<FriendshipRequest>() {
             @Override
             protected void updateItem(FriendshipRequest item, boolean empty) {
@@ -43,22 +46,29 @@ public class FriendRequestsController extends ControllerSuperclass {
         requestList = FXCollections.observableArrayList();
         listViewRequests.setItems(requestList);
         requestList.clear();
-        Optional<User> currentUser = getUserService().getById(UserInstance.getInstance().getId());
-        currentUser.ifPresent(user -> getFriendshipRequestService().getRequestsForUser(user)
+        Optional<User> currentUser = service.getUserById(UserInstance.getInstance().getId());
+        currentUser.ifPresent(user -> service.getRequestsForUser(user)
                 .forEach(r -> requestList.add(r)));
 
+    }
+    private void reloadModel(){
+        requestList.clear();
+        Optional<User> currentUser = service.getUserById(UserInstance.getInstance().getId());
+        currentUser.ifPresent(user -> service.getRequestsForUser(user)
+                .forEach(r -> requestList.add(r)));
+        listViewRequests.setItems(requestList);
     }
     @FXML
     protected void handleButtonAcceptRequestClicked(ActionEvent actionEvent) {
         var selectedItems = listViewRequests.getSelectionModel().getSelectedItems();
         FriendshipRequest friendshipRequest = (FriendshipRequest) selectedItems.getFirst();
-        String user1 = UserService.getInstance().getById(friendshipRequest.getSender()).get().getUsername();
-        String user2 = UserService.getInstance().getById(friendshipRequest.getReceiver()).get().getUsername();
+        String user1 = service.getUserById(friendshipRequest.getSender()).get().getUsername();
+        String user2 = service.getUserById(friendshipRequest.getReceiver()).get().getUsername();
         Friendship fr = new Friendship(LocalDateTime.now(),user1,user2);
         fr.setId(friendshipRequest.getId());
-        getFriendshipService().create(fr);
+        service.createFriendship(fr);
         requestList.remove(friendshipRequest);
-        getFriendshipRequestService().removeRequest(friendshipRequest.getSender(),friendshipRequest.getReceiver());
+        service.removeFriendshipRequest(friendshipRequest);
 
     }
     @FXML
@@ -66,10 +76,15 @@ public class FriendRequestsController extends ControllerSuperclass {
         var selectedItems = listViewRequests.getSelectionModel().getSelectedItems();
         FriendshipRequest friendshipRequest = (FriendshipRequest) selectedItems.getFirst();
         requestList.remove(friendshipRequest);
-        getFriendshipRequestService().removeRequest(friendshipRequest.getSender(),friendshipRequest.getReceiver());
+        service.removeFriendshipRequest(friendshipRequest);
     }
     @FXML
     protected void backToMain(ActionEvent actionEvent) {
-        getScreenService().switchScene("main");
+        service.switchScene("main");
+    }
+
+    @Override
+    public void update() {
+        reloadModel();
     }
 }

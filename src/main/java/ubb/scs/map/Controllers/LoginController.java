@@ -22,12 +22,16 @@ public class LoginController extends ControllerSuperclass {
         String password = passwordField.getText();
         usernameField.clear();
         passwordField.clear();
-        if (getUserService().login(username,password)) {
+        if (service.login(username,password)) {
             System.out.println(username + " Logged in!");
-            getScreenService().switchScene("main");
+            service.switchScene("main");
         } else{
             System.out.println("Invalid username or password!");
         }
 
+    }
+    @FXML
+    protected void register() throws IOException {
+        service.switchScene("register");
     }
 }

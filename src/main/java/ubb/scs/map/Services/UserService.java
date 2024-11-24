@@ -3,8 +3,6 @@ package ubb.scs.map.Services;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
 import ubb.scs.map.Repository.Repository;
-import ubb.scs.map.Utils.events.ChangeEventType;
-import ubb.scs.map.Utils.events.UserEntityChangeEvent;
 import ubb.scs.map.Utils.observer.Observable;
 import ubb.scs.map.Utils.observer.Observer;
 
@@ -15,26 +13,16 @@ import java.util.stream.StreamSupport;
 
 
 public class UserService implements EntityService<Long, User>,
-        Observable<UserEntityChangeEvent> {
+        Observable {
 
-    private static UserService instance;
     private Repository<Long,User> repository;
-    private final List<Observer<UserEntityChangeEvent>> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
-    private UserService() {
-    }
-
-    public static synchronized UserService getInstance() {
-        if (instance == null) {
-            // Call to the parent class's getInstance
-            instance = new UserService();
-        }
-        return instance;
-    }
-
-    public void setRepository(Repository<Long, User> repository) {
+    public UserService(Repository<Long,User> repository) {
         this.repository = repository;
     }
+
+
 
     public Optional<User> findByUsername(String username) {
         return StreamSupport.stream(getAll().spliterator(), false).filter(user -> user.getUsername().equals(username)).findFirst();
@@ -44,7 +32,7 @@ public class UserService implements EntityService<Long, User>,
         if (user.isPresent()) {
             if(password.equals(user.get().getPassword())) {
                 UserInstance.getInstance().setId(user.get().getId());
-                notifyObservers(new UserEntityChangeEvent(ChangeEventType.LOGIN));
+                UserInstance.getInstance().setUsername(username);
                 return true;
             }
         }
@@ -59,7 +47,7 @@ public class UserService implements EntityService<Long, User>,
     @Override
     public Optional<User> create(User entity) {
         if(EntityService.super.create(entity).isPresent()){
-            notifyObservers( new UserEntityChangeEvent(ChangeEventType.ADD,entity));
+            notifyObservers();
             return Optional.of(entity);
         }
         return Optional.empty();
@@ -71,7 +59,7 @@ public class UserService implements EntityService<Long, User>,
         if(oldUser.isPresent()){
             Optional<User> newUser = repository.update(entity);
             if(newUser.isPresent()){
-                notifyObservers(new UserEntityChangeEvent(ChangeEventType.UPDATE,entity,oldUser.get()));
+                notifyObservers();
             }
             return newUser;
         }
@@ -84,7 +72,7 @@ public class UserService implements EntityService<Long, User>,
     @Override
     public Optional<User> delete(Long entityId) {
         Optional<User> user = repository.delete(entityId);
-        user.ifPresent(value -> notifyObservers(new UserEntityChangeEvent(ChangeEventType.DELETE, value)));
+        user.ifPresent(value -> notifyObservers());
         return user;
     }
 
@@ -99,17 +87,17 @@ public class UserService implements EntityService<Long, User>,
     }
 
     @Override
-    public void addObserver(Observer<UserEntityChangeEvent> e) {
+    public void addObserver(Observer e) {
         observers.add(e);
     }
 
     @Override
-    public void removeObserver(Observer<UserEntityChangeEvent> e) {
+    public void removeObserver(Observer e) {
         observers.remove(e);
     }
 
     @Override
-    public void notifyObservers(UserEntityChangeEvent t) {
-        observers.forEach(x->x.update(t));
+    public void notifyObservers() {
+        observers.forEach(x->x.update());
     }
 }

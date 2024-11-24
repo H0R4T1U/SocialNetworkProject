@@ -13,9 +13,9 @@ import java.util.Set;
 public class NetworkService {
     private final UserService userService;
     private final FriendshipService friendshipService;
-    public NetworkService(FriendshipService friendshipService) {
-        this.userService = UserService.getInstance();
+    public NetworkService(FriendshipService friendshipService,UserService userService) {
         this.friendshipService = friendshipService;
+        this.userService = userService;
     }
     public List<Set<Long>> getCommunityGraph() {
         Graph<Long, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);

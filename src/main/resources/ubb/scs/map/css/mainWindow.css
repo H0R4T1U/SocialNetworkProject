@@ -1,25 +1,50 @@
 /* Table Section */
 .table-section {
-    -fx-background-color: #f7f7f7;
+    -fx-border-radius: 5px;
+    -fx-border-color: #000401;
+
 }
 
 /* Styled Table */
 .styled-table {
-    -fx-border-color: #ccc;
     -fx-border-radius: 5px;
-    -fx-background-color: #ffffff;
+    -fx-border-color: #000401;
 }
 
 /* Table Column */
 .table-column {
     -fx-alignment: CENTER;
-    -fx-font-size: 14px;
-    -fx-text-fill: #333;
 }
+/* List Section */
+.list-section {
+    -fx-border-radius: 5px;
+    -fx-border-color: #000401;
+}
+
+/* Styled List */
+.styled-list {
+    -fx-border-radius: 5px;
+    -fx-border-color: #000401;
+}
+
+/* List Cell */
+.list-cell {
+    -fx-alignment: CENTER;
+}
+.list-cell:selected {
+    -fx-border-color: #0275d8;
+    -fx-background-color: #d9edf7; /* Optional: Change background color for selected items */
+}
+
+.table-row-cell:selected .table-cell {
+
+    -fx-border-color:#0275d8 ;
+}
+
 
 /* Action Section */
 .action-section {
-    -fx-background-color: #f7f7f7;
+    -fx-background-color: #E3E3E3;
     -fx-padding: 10px;
 }
 
@@ -42,17 +67,15 @@
     padding: 0;
     box-sizing: border-box;
 
+    -fx-background-color: #E3E3E3;
+    -fx-text-fill: #000401;
+    -fx-font-family: "Mechanical";
+    -fx-font-size: 22px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
-}
 
 /* Center the VBox vertically and horizontally */
 .login_param {
-    -fx-background-color: #f7f7f7;
-
     -fx-alignment: center;
     -fx-pref-width: 100%;
     -fx-max-width: 250px;  /* Set max width for responsiveness */
@@ -61,38 +84,31 @@ body {
 
 /* Header */
 .header {
-    -fx-font-size: 24px;
-    -fx-text-fill: #333;
+    -fx-font-size: 40px;
     -fx-font-weight: bold;
     -fx-padding: 10px;
 }
 
 /* Label for the input fields */
 .input-label {
-    -fx-font-size: 13;
-    -fx-text-fill: #555;
 }
 
 /* Input fields styling */
 .input-field {
+    -fx-border-color: black;
     -fx-max-width: 250px;
     -fx-padding: 10px;
     -fx-border-radius: 5px;
-    -fx-border-color: #ccc;
-    -fx-font-size: 12px;
 }
 
 /* Focused state for input fields */
-.input-field:focused {
-    -fx-border-color: #4CAF50;
-}
+
 
 /* Login button styling */
 .login-button {
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-pref-width: 100%;
-    -fx-font-size: 13px;
     -fx-padding: 10px;
     -fx-border-radius: 5px;
     -fx-border-color: #4CAF50;
@@ -103,4 +119,47 @@ body {
 /* Hover state for the button */
 .login-button:hover {
     -fx-background-color: #45a049;
+}
+.register_param:hover{
+    -fx-text-fill: #025aa5;
+    -fx-cursor: hand;
+}
+.add-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4CAF50;
+
+}
+.add-button:hover {
+    -fx-background-color: #45a049;
+}
+.remove-button {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #d43f3a;
+
+}
+.remove-button:hover {
+    -fx-background-color: #c9302c;
+}
+.default-button{
+    -fx-background-color: #0275d8;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #034f8e;
+}
+.default-button:hover {
+    -fx-background-color: #025aa5;
+}
+.sender-label{
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
 }

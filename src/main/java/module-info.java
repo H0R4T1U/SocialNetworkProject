@@ -4,6 +4,7 @@ module ubb.scs.map {
     requires javafx.fxml;
     requires javafx.graphics;
     requires org.jgrapht.core;
+    requires java.compiler;
 
 
     opens ubb.scs.map to javafx.fxml;
@@ -21,5 +22,10 @@ module ubb.scs.map {
     opens ubb.scs.map.Repository to javafx.graphics;
     exports ubb.scs.map.Repository to javafx.graphics;
 
+    opens ubb.scs.map.Facades to javafx.graphics;
+    exports ubb.scs.map.Facades to javafx.graphics;
+
+    opens ubb.scs.map.Utils to javafx.graphics;
+    exports ubb.scs.map.Utils to javafx.graphics;
 
 }

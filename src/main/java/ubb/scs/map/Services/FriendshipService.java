@@ -3,8 +3,6 @@ package ubb.scs.map.Services;
 import ubb.scs.map.Domain.Friendship;
 import ubb.scs.map.Domain.Tuple;
 import ubb.scs.map.Repository.Repository;
-import ubb.scs.map.Utils.events.ChangeEventType;
-import ubb.scs.map.Utils.events.FriendshipEntityChangeEvent;
 import ubb.scs.map.Utils.observer.Observer;
 import ubb.scs.map.Utils.observer.Observable;
 
@@ -13,26 +11,15 @@ import java.util.stream.StreamSupport;
 
 
 public class FriendshipService implements EntityService<Tuple<Long,Long>, Friendship>,
-        Observable<FriendshipEntityChangeEvent>{
+        Observable{
 
-    private static FriendshipService instance = new FriendshipService();
-    private final UserService userService = UserService.getInstance();
     private Repository<Tuple<Long,Long>,Friendship> repo;
 
-    private final List<Observer<FriendshipEntityChangeEvent>> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
-    private FriendshipService() {}
-    public static synchronized FriendshipService getInstance() {
-        if(instance == null) {
-            instance = new FriendshipService();
-        }
-        return instance;
-    }
-
-    public void setRepo(Repository<Tuple<Long, Long>, Friendship> repo) {
+    public FriendshipService(Repository<Tuple<Long,Long>,Friendship> repo) {
         this.repo = repo;
     }
-
     public void deletedUser(Long id){
         List<Friendship> friendships = new ArrayList<>((Collection<Friendship>) getAll());
         friendships.forEach(friendship -> {
@@ -55,8 +42,7 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
     @Override
     public Optional<Friendship> create(Friendship entity) {
         if(EntityService.super.create(entity).isPresent()){
-            FriendshipEntityChangeEvent event = new FriendshipEntityChangeEvent(ChangeEventType.ADD,entity);
-            notifyObservers(event);
+            notifyObservers();
             return Optional.of(entity);
         }
         return Optional.empty();
@@ -68,7 +54,7 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
         if(oldFriendship.isPresent()){
             Optional<Friendship> newFriendship = repo.update(entity);
             if(newFriendship.isPresent()){
-                notifyObservers(new FriendshipEntityChangeEvent(ChangeEventType.UPDATE,entity,oldFriendship.get()));
+                notifyObservers();
             }
             return newFriendship;
         }
@@ -78,10 +64,7 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
     @Override
     public Optional<Friendship> delete(Tuple<Long, Long> entityId) {
         Optional<Friendship> friendship = repo.delete(entityId);
-        if(friendship.isPresent()){
-            notifyObservers(new FriendshipEntityChangeEvent(ChangeEventType.DELETE,friendship.get()));
-
-        }
+        friendship.ifPresent(value -> notifyObservers());
         return friendship;
     }
 
@@ -96,17 +79,17 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
     }
 
     @Override
-    public void addObserver(Observer<FriendshipEntityChangeEvent> e) {
+    public void addObserver(Observer e) {
         observers.add(e);
     }
 
     @Override
-    public void removeObserver(Observer<FriendshipEntityChangeEvent> e) {
+    public void removeObserver(Observer e) {
         observers.remove(e);
     }
 
     @Override
-    public void notifyObservers(FriendshipEntityChangeEvent t) {
-        observers.forEach(x-> x.update(t));
+    public void notifyObservers() {
+        observers.forEach(x-> x.update());
     }
 }

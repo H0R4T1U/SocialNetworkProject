@@ -15,16 +15,10 @@ public class ScreenService  {
     private final Stage primaryStage;
     private final Map<String, Scene> scenes = new HashMap<>();
     private final Map<String, ControllerSuperclass> controllers = new HashMap<>();
-    private final UserService userService;
-    private final FriendshipService friendshipService;
-    private final FriendshipRequestService friendshipRequestService;
 
 
-    public ScreenService(Stage primaryStage, UserService userService, FriendshipService friendshipService, FriendshipRequestService friendshipRequestService) {
+    public ScreenService(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.userService = userService;
-        this.friendshipService = friendshipService;
-        this.friendshipRequestService = friendshipRequestService;
     }
 
     public void addScene(String name, String fxmlFile) {
@@ -32,10 +26,6 @@ public class ScreenService  {
         try {
             Parent root = loader.load();
             ControllerSuperclass controller = loader.getController();
-            controller.setUserService(userService);
-            controller.setScreenService(this);
-            controller.setFriendshipService(friendshipService);
-            controller.setFriendshipRequestService(friendshipRequestService);
             scenes.put(name, new Scene(root));
             controllers.put(name, controller);
         } catch (IOException e) {
