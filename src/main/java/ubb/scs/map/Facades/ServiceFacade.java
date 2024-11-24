@@ -91,6 +91,9 @@ public class ServiceFacade {
         Message msg = new Message(currentUser,chatterId,message,reply, LocalDateTime.now());
         messageService.addMessage(msg);
     }
+    public Optional<Message> getMessageById(Long id){
+        return messageService.getMessageById(id);
+    }
     public void addObserver(Observer observer, ObservableType type) {
         if(type == ObservableType.REQUEST){
             friendshipRequestService.addObserver(observer);

@@ -69,8 +69,10 @@
 
     -fx-background-color: #E3E3E3;
     -fx-text-fill: #000401;
-    -fx-font-family: "Mechanical";
+    -fx-font-family: "0xProto Nerd Font Mono";
+    -fx-font-weight: bold;
     -fx-font-size: 22px;
+
 }
 
 
@@ -162,4 +164,8 @@
 .sender-label{
     -fx-font-size: 30px;
     -fx-font-weight: bold;
+}
+.replyingTo{
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
 }

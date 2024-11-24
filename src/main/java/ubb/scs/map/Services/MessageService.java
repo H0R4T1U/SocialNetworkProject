@@ -7,6 +7,7 @@ import ubb.scs.map.Utils.observer.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MessageService implements Observable {
     private final Repository<Long, Message> messageRepository;
@@ -36,8 +37,8 @@ public class MessageService implements Observable {
         }
     }
 
-    public Message getMessageById(Long id) {
-        return messageRepository.findOne(id).orElse(null);
+    public Optional<Message> getMessageById(Long id) {
+        return messageRepository.findOne(id);
     }
     @Override
     public void addObserver(Observer e) {
@@ -51,6 +52,6 @@ public class MessageService implements Observable {
 
     @Override
     public void notifyObservers() {
-        observers.forEach(e -> e.update());
+        observers.forEach(Observer::update);
     }
 }

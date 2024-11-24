@@ -8,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import ubb.scs.map.Domain.*;
 import ubb.scs.map.Utils.observer.ObservableType;
 import ubb.scs.map.Utils.observer.Observer;
@@ -24,7 +26,7 @@ public class MessageController extends ControllerSuperclass implements Observer 
     @FXML
     private ListView<Friendship> chats;
 
-
+    private Long isReplying = null;
     private ObservableList<Friendship> friendships;
     private ObservableList<Message> allMessages;
     public void init() {
@@ -69,8 +71,15 @@ public class MessageController extends ControllerSuperclass implements Observer 
                     setText(null);
                 } else {
                     // Create a horizontal layout for sender and message text
+                    VBox vBox = new VBox();
                     HBox hBox = new HBox(10); // 10px spacing
                     hBox.setPrefWidth(param.getWidth() - 20);
+                    setOnMouseClicked(mouseClickedEvent -> {
+                                if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
+                                    isReplying = item.getId();
+                                }
+                    });
+                    // label for reply if it's the case
 
                     // Label for the sender
                     String sender = service.getUserById(item.getSender()).get().getUsername();
@@ -84,11 +93,17 @@ public class MessageController extends ControllerSuperclass implements Observer 
 
                     // Add labels to the HBox
                     hBox.getChildren().addAll(senderLabel, messageLabel);
+                    vBox.getChildren().add(hBox);
+                    if(item.getReplyMessage() != 0) {
+                        Label reply = new Label("Is replying to:" + service.getMessageById(item.getReplyMessage()).get().getText());
+                        vBox.getChildren().addFirst(reply);
+                    }
                     if(!Objects.equals(sender, UserInstance.getInstance().getUsername())) {
                         hBox.setAlignment(Pos.CENTER_RIGHT);
+                        vBox.setAlignment(Pos.CENTER_RIGHT);
                     }
                     // Set the HBox as the graphic of the ListCell
-                    setGraphic(hBox);
+                    setGraphic(vBox);
                 }
             }
         });
@@ -104,7 +119,8 @@ public class MessageController extends ControllerSuperclass implements Observer 
         Friendship x = chats.getSelectionModel().getSelectedItem();
         Long chatterId = Objects.equals(x.getId().getE1(), currentUser) ? x.getId().getE2() : x.getId().getE1();
         String message = messageBox.getText();
-        service.addMessage(currentUser,chatterId,message,null);
+        service.addMessage(currentUser,chatterId,message,isReplying);
+        isReplying = null;
         messageBox.clear();
     }
 
@@ -120,5 +136,9 @@ public class MessageController extends ControllerSuperclass implements Observer 
         Long chatterId = Objects.equals(x.getId().getE1(), currentUser) ? x.getId().getE2() : x.getId().getE1();
         allMessages.addAll(service.getMessages(currentUser, chatterId));
         messages.setItems(allMessages);
+    }
+    @FXML
+    protected void backToMainMenu() {
+        service.switchScene("main");
     }
 }
