@@ -83,7 +83,7 @@ public class MessageController extends ControllerSuperclass implements Observer 
 
                     // Label for the sender
                     String sender = service.getUserById(item.getSender()).get().getUsername();
-                    Label senderLabel = new Label(sender+ ": ");
+                    Label senderLabel = new Label(sender+ ":");
                     // Label for the actual message text
                     Label messageLabel = new Label(item.getText());
                     messageLabel.setWrapText(true);

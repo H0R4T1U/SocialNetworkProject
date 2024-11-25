@@ -162,10 +162,17 @@
     -fx-background-color: #025aa5;
 }
 .sender-label{
-    -fx-font-size: 30px;
+    -fx-font-size:18px;
     -fx-font-weight: bold;
+}
+.message-label{
+    -fx-font-size:15px;
 }
 .replyingTo{
     -fx-font-weight: bold;
     -fx-font-style: italic;
+}
+.message_box{
+    -fx-border-radius: 5px;
+    -fx-border-color: #000401;
 }
