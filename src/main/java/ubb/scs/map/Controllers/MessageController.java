@@ -3,13 +3,11 @@ package ubb.scs.map.Controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ubb.scs.map.Domain.*;
 import ubb.scs.map.Utils.observer.ObservableType;
@@ -71,9 +69,8 @@ public class MessageController extends ControllerSuperclass implements Observer 
                     setText(null);
                 } else {
                     // Create a horizontal layout for sender and message text
-                    VBox vBox = new VBox();
-                    HBox hBox = new HBox(10); // 10px spacing
-                    hBox.setPrefWidth(param.getWidth() - 20);
+                    VBox vBox = new VBox(10);
+                    vBox.setPrefWidth(param.getWidth() - 20);
                     setOnMouseClicked(mouseClickedEvent -> {
                                 if (mouseClickedEvent.getButton().equals(MouseButton.PRIMARY) && mouseClickedEvent.getClickCount() == 2) {
                                     isReplying = item.getId();
@@ -87,20 +84,16 @@ public class MessageController extends ControllerSuperclass implements Observer 
                     // Label for the actual message text
                     Label messageLabel = new Label(item.getText());
                     messageLabel.setWrapText(true);
-                    senderLabel.getStyleClass().add("sender-label");
-                    messageLabel.getStyleClass().add("message-label");
+                    senderLabel.getStyleClass().add("user-label");
 
 
                     // Add labels to the HBox
-                    hBox.getChildren().addAll(senderLabel, messageLabel);
-                    vBox.getChildren().add(hBox);
                     if(item.getReplyMessage() != 0) {
                         Label reply = new Label("Is replying to:" + service.getMessageById(item.getReplyMessage()).get().getText());
-                        vBox.getChildren().addFirst(reply);
-                    }
-                    if(!Objects.equals(sender, UserInstance.getInstance().getUsername())) {
-                        hBox.setAlignment(Pos.CENTER_RIGHT);
-                        vBox.setAlignment(Pos.CENTER_RIGHT);
+                        reply.getStyleClass().add("reply-label");
+                        vBox.getChildren().addAll(senderLabel,reply,messageLabel);
+                    }else{
+                        vBox.getChildren().addAll(senderLabel, messageLabel);
                     }
                     // Set the HBox as the graphic of the ListCell
                     setGraphic(vBox);

@@ -1,178 +1,157 @@
-/* Table Section */
-.table-section {
-    -fx-border-radius: 5px;
-    -fx-border-color: #000401;
+/* mainWindow.css */
+
+/* General Settings */
+*{
+    -fx-font-family: "-apple-system", ".SF NS Text", sans-serif;
 
 }
-
-/* Styled Table */
-.styled-table {
-    -fx-border-radius: 5px;
-    -fx-border-color: #000401;
+.root {
+    -fx-font-family: "-apple-system", ".SF NS Text", sans-serif;
+    -fx-base: #2b2b2b;
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #ffffff;
 }
 
-/* Table Column */
-.table-column {
-    -fx-alignment: CENTER;
-}
-/* List Section */
-.list-section {
-    -fx-border-radius: 5px;
-    -fx-border-color: #000401;
+/* Labels */
+.label {
+    -fx-text-fill: #e0e0e0;
 }
 
-/* Styled List */
-.styled-list {
-    -fx-border-radius: 5px;
-    -fx-border-color: #000401;
+.header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to bottom, #ffffff, #d9d9d9);
 }
 
-/* List Cell */
-.list-cell {
-    -fx-alignment: CENTER;
-}
-.list-cell:selected {
-    -fx-border-color: #0275d8;
-    -fx-background-color: #d9edf7; /* Optional: Change background color for selected items */
-}
-
-.table-row-cell:selected .table-cell {
-
-    -fx-border-color:#0275d8 ;
+/* Buttons */
+.button {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 4, 0, 0, 1);
 }
 
-
-/* Action Section */
-.action-section {
-    -fx-background-color: #E3E3E3;
-    -fx-padding: 10px;
+.button:hover {
+    -fx-background-color: #505357;
 }
 
-/* Logout Button */
 .logout-button {
     -fx-background-color: #d9534f;
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #d43f3a;
+    -fx-text-fill: #ffffff;
 }
 
 .logout-button:hover {
     -fx-background-color: #c9302c;
 }
-/* Global reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 
-    -fx-background-color: #E3E3E3;
-    -fx-text-fill: #000401;
-    -fx-font-family: "0xProto Nerd Font Mono";
-    -fx-font-weight: bold;
-    -fx-font-size: 22px;
-
-}
-
-
-/* Center the VBox vertically and horizontally */
-.login_param {
-    -fx-alignment: center;
-    -fx-pref-width: 100%;
-    -fx-max-width: 250px;  /* Set max width for responsiveness */
-    -fx-spacing: 20px;
-}
-
-/* Header */
-.header {
-    -fx-font-size: 40px;
-    -fx-font-weight: bold;
-    -fx-padding: 10px;
-}
-
-/* Label for the input fields */
-.input-label {
-}
-
-/* Input fields styling */
-.input-field {
-    -fx-border-color: black;
-    -fx-max-width: 250px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-}
-
-/* Focused state for input fields */
-
-
-/* Login button styling */
-.login-button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-pref-width: 100%;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #4CAF50;
-    -fx-min-width: 250px;
-
-}
-
-/* Hover state for the button */
-.login-button:hover {
-    -fx-background-color: #45a049;
-}
-.register_param:hover{
-    -fx-text-fill: #025aa5;
-    -fx-cursor: hand;
-}
 .add-button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #4CAF50;
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: #ffffff;
+}
 
-}
 .add-button:hover {
-    -fx-background-color: #45a049;
+    -fx-background-color: #4cae4c;
 }
+
 .remove-button {
     -fx-background-color: #d9534f;
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #d43f3a;
-
+    -fx-text-fill: #ffffff;
 }
+
 .remove-button:hover {
     -fx-background-color: #c9302c;
 }
-.default-button{
-    -fx-background-color: #0275d8;
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #034f8e;
+
+.default-button {
+    -fx-background-color: #337ab7;
+    -fx-text-fill: #ffffff;
 }
+
 .default-button:hover {
-    -fx-background-color: #025aa5;
+    -fx-background-color: #286090;
 }
-.sender-label{
-    -fx-font-size:18px;
+
+/* Input Fields */
+.text-field, .password-field, .text-area {
+    -fx-background-color: #2c2f33;
+    -fx-text-fill: #d9d9d9;
+    -fx-border-color: #45494e;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #5cb85c;
+    -fx-background-color: #33363b;
+}
+
+/* ListView */
+.styled-list {
+    -fx-control-inner-background: #2c2f33;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #45494e;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.styled-list .list-cell:filled:selected,
+.styled-list .list-cell:filled:selected:focused {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: #ffffff;
+}
+
+/* TableView */
+.styled-table {
+    -fx-base: #2c2f33;
+    -fx-control-inner-background: #2c2f33;
+    -fx-table-cell-border-color: #45494e;
+    -fx-border-color: #45494e;
+}
+
+.table-column {
+    -fx-background-color: #45494e;
+    -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
 }
-.message-label{
-    -fx-font-size:15px;
+
+/* ButtonBar */
+.action-section {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 10px;
 }
-.replyingTo{
-    -fx-font-weight: bold;
+
+/* VBox and HBox Styling */
+.login_param, .message_box {
+    -fx-background-color: #2c2f33;
+    -fx-border-color: #45494e;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* SplitPane */
+.split-pane {
+    -fx-background-color: #1e1e1e;
+    -fx-divider-position: 0.5;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #45494e;
+}
+.reply-label {
     -fx-font-style: italic;
+    -fx-font-family: "Segoe UI", sans-serif;
 }
-.message_box{
-    -fx-border-radius: 5px;
-    -fx-border-color: #000401;
+.user-label{
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to bottom, #ffffff, #d9d9d9);
+}
+
+.anchor:hover {
+    -fx-text-fill: #505357;
+
 }

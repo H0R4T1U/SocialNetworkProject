@@ -28,9 +28,10 @@ public class UserService implements EntityService<Long, User>,
         return StreamSupport.stream(getAll().spliterator(), false).filter(user -> user.getUsername().equals(username)).findFirst();
     }
     public boolean login(String username, String password) {
+
         Optional<User> user = findByUsername(username);
         if (user.isPresent()) {
-            if(password.equals(user.get().getPassword())) {
+            if(user.get().getPassword().equals(password)) {
                 UserInstance.getInstance().setId(user.get().getId());
                 UserInstance.getInstance().setUsername(username);
                 return true;

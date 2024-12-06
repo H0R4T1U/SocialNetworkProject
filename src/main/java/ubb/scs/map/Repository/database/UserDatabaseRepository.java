@@ -48,16 +48,26 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
     @Override
     public Optional<User> save(User user) {
         validator.validate(user);
-        String SAVE_QUERY = "insert into \"User\" (\"id\",\"username\",\"password\",\"phone\",\"joindate\",\"age\" )  values(?,?,?,?,?,?)";
+        String SAVE_QUERY = "insert into \"User\" (\"username\",\"password\",\"phone\",\"joindate\",\"age\" )  values(?,?,?,?,?)";
         try (Connection connection = prepareConnection();
-             PreparedStatement ps = connection.prepareStatement(SAVE_QUERY)) {
-            ps.setLong(1, user.getId());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getPhoneNumber());
-            ps.setString(5, user.getJoinDate().toString());
-            ps.setInt(6, user.getAge());
-            ps.execute();
+             PreparedStatement ps = connection.prepareStatement(SAVE_QUERY,Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getPhoneNumber());
+            ps.setString(4, user.getJoinDate().toString());
+            ps.setInt(5, user.getAge());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Inserting user failed, no rows affected.");
+            }
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    Long generatedId = generatedKeys.getLong(1);
+                    user.setId(generatedId); // Assuming Message class has a setId method
+                } else {
+                    throw new SQLException("Inserting user failed, no ID obtained.");
+                }
+            }
             return Optional.of(user);
         } catch (SQLException e) {
             throw new RuntimeException(e);

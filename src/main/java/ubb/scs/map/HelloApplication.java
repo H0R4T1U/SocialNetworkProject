@@ -23,6 +23,7 @@ public class HelloApplication extends Application {
         screenService.addScene("main","Views/mainWindow.fxml");
         screenService.addScene("friendshipRequests","Views/friendRequestWindow.fxml");
         screenService.addScene("messages","Views/Messages.fxml");
+        screenService.addScene("register","Views/register.fxml");
         screenService.switchScene("login");
 
 

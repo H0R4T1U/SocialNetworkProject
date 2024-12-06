@@ -42,6 +42,9 @@ public class ServiceFacade {
         this.screenService.switchScene(name);
     }
 
+    public Iterable<User> getAllUsers() {
+        return userService.getAll();
+    }
 
     public Optional<User> getUserById(Long id) {
         return userService.getById(id);
@@ -54,7 +57,9 @@ public class ServiceFacade {
     public boolean login(String username, String password) {
         return userService.login(username, password);
     }
-
+    public Optional<User> createUser(User user) {
+        return userService.create(user);
+    }
 
     public Optional<Friendship> getFriendshipById(Tuple<Long,Long> id){
         return friendshipService.getById(id);

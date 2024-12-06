@@ -4,9 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import ubb.scs.map.Domain.*;
 import ubb.scs.map.Utils.observer.ObservableType;
 import ubb.scs.map.Utils.observer.Observer;
@@ -17,6 +15,10 @@ import java.util.Optional;
 
 public class MainWindowController extends ControllerSuperclass implements Observer{
     private final ObservableList<Friendship> model = FXCollections.observableArrayList();
+    private ObservableList<User> userModel = FXCollections.observableArrayList();
+
+    @FXML
+    private ListView<User> userList;
 
     @FXML
     private TextField searchBar;
@@ -27,8 +29,11 @@ public class MainWindowController extends ControllerSuperclass implements Observ
 
     public void init() {
         service.addObserver(this, ObservableType.FRIENDSHIP);
+        service.addObserver(this, ObservableType.USER);
+
         initModel();
         Optional<User> user = service.getUserById(UserInstance.getInstance().getId());
+        // Alerta Friend Request
         if(user.isPresent()){
             Iterable<FriendshipRequest> requests = service.getRequestsForUser(user.get());
             boolean hasRequests = requests.iterator().hasNext();
@@ -46,12 +51,39 @@ public class MainWindowController extends ControllerSuperclass implements Observ
                 return new SimpleStringProperty(f.getUser1());
             }
         });
+
         tableView.setItems(model);
+
+        userList.setCellFactory(param -> new ListCell<User>() {
+            @Override
+            protected void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    setText(item.toString());
+                    setWrapText(true);
+                    setPrefWidth(param.getWidth() - 20);
+                    setMinHeight(USE_COMPUTED_SIZE);
+                    setMaxHeight(USE_PREF_SIZE);
+                }
+            }
+        });
+        userModel = FXCollections.observableArrayList();
+        userList.setItems(userModel);
+        userModel.clear();
+        service.getAllUsers().forEach(usr -> {
+            userModel.add(usr);
+        });
+        userList.setItems(userModel);
     }
 
     private void initModel() {
         List<Friendship> friends = service.getUserFriends(UserInstance.getInstance().getId());
+        List<User> users = (List<User>) service.getAllUsers();
         model.setAll(friends);
+        userModel.setAll(users);
 
 
     }

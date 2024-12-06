@@ -4,12 +4,9 @@ module ubb.scs.map {
     requires javafx.fxml;
     requires javafx.graphics;
     requires org.jgrapht.core;
-    requires java.compiler;
-
 
     opens ubb.scs.map to javafx.fxml;
     exports ubb.scs.map to javafx.graphics;
-
     exports ubb.scs.map.Controllers to javafx.graphics;
     opens ubb.scs.map.Controllers to javafx.fxml;
 

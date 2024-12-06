@@ -1,5 +1,7 @@
 package ubb.scs.map.Domain;
 
+import ubb.scs.map.Utils.Constants;
+
 import java.time.LocalDateTime;
 
 public class FriendshipRequest extends Entity<Tuple<Long, Long>> {
@@ -32,7 +34,7 @@ public class FriendshipRequest extends Entity<Tuple<Long, Long>> {
     public String toString() {
         return "from " +  getSender() +
                 " to " + getReceiver() +
-                " on " + dateSent +
+                " on " + dateSent.format(Constants.DATE_TIME_FORMATTER) +
                 " status: " + status;
     }
 }

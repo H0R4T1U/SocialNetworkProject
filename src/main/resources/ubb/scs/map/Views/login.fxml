@@ -11,14 +11,14 @@
             <Font size="30.0" />
          </font></Label>
       <VBox alignment="CENTER" spacing="15.0" styleClass="login_param">
-         <Label styleClass="input-label" text="Username" />
-         <TextField fx:id="usernameField" styleClass="input-field" />
+         <Label text="Username" />
+         <TextField fx:id="usernameField" />
       </VBox>
       <VBox alignment="CENTER" spacing="15.0" styleClass="login_param">
-         <Label styleClass="input-label" text="Password" />
-         <PasswordField fx:id="passwordField" styleClass="input-field" />
+         <Label text="Password" />
+         <PasswordField fx:id="passwordField" />
       </VBox>
-      <Button onAction="#login" styleClass="login-button" text="Login" />
-      <Label styleClass="register_param" onMouseClicked="#register"  text="Don't Have An Account?" />
+      <Button onAction="#login" text="Login" />
+      <Label styleClass="anchor" onMouseClicked="#toRegister"  text="Don't Have An Account?" />
    </VBox>
 </AnchorPane>

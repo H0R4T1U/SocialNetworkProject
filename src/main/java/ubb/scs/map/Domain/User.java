@@ -1,6 +1,8 @@
 package ubb.scs.map.Domain;
 
 
+import ubb.scs.map.Utils.Constants;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -66,6 +68,11 @@ public class User extends Entity<Long>   {
         if (!super.equals(o)) return false;
         User user = (User) o;
         return age == user.age && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(joinDate, user.joinDate);
+    }
+
+    @Override
+    public String toString() {
+        return username + " age:" + age + " joined:" + joinDate.format(Constants.DATE_FORMATTER);
     }
 
     @Override

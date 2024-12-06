@@ -8,7 +8,7 @@
 <?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="1000.0" prefWidth="1000.0" stylesheets="@../css/mainWindow.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.scs.map.Controllers.FriendRequestsController">
     <!-- Horizontally Centered VBox -->
-    <VBox fx:id="vBox" spacing="15" styleClass="login_param" AnchorPane.leftAnchor="200.0"
+    <VBox spacing="15" styleClass="login_param" AnchorPane.leftAnchor="200.0"
           AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="50.0">
         <Label styleClass="header" text="Requests">
         <font>

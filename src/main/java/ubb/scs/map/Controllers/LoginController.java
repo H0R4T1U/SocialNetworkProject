@@ -30,7 +30,7 @@ public class LoginController extends ControllerSuperclass {
 
     }
     @FXML
-    protected void register() {
+    protected void toRegister() {
         service.switchScene("register");
     }
 }
