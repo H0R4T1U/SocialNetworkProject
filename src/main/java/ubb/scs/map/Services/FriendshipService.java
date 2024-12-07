@@ -2,7 +2,11 @@ package ubb.scs.map.Services;
 
 import ubb.scs.map.Domain.Friendship;
 import ubb.scs.map.Domain.Tuple;
+import ubb.scs.map.Domain.User;
 import ubb.scs.map.Repository.Repository;
+import ubb.scs.map.Repository.database.PagingRepository;
+import ubb.scs.map.Utils.Paging.Page;
+import ubb.scs.map.Utils.Paging.Pageable;
 import ubb.scs.map.Utils.observer.Observer;
 import ubb.scs.map.Utils.observer.Observable;
 
@@ -13,11 +17,11 @@ import java.util.stream.StreamSupport;
 public class FriendshipService implements EntityService<Tuple<Long,Long>, Friendship>,
         Observable{
 
-    private final Repository<Tuple<Long,Long>,Friendship> repo;
+    private final PagingRepository<Tuple<Long,Long>,Friendship> repo;
 
     private final List<Observer> observers = new ArrayList<>();
 
-    public FriendshipService(Repository<Tuple<Long,Long>,Friendship> repo) {
+    public FriendshipService(PagingRepository<Tuple<Long,Long>,Friendship> repo) {
         this.repo = repo;
     }
     public void deletedUser(Long id){
@@ -91,5 +95,9 @@ public class FriendshipService implements EntityService<Tuple<Long,Long>, Friend
     @Override
     public void notifyObservers() {
         observers.forEach(Observer::update);
+    }
+
+    public Page<Friendship> findAllOnPage(Pageable pageable) {
+        return repo.findAllOnPage(pageable);
     }
 }

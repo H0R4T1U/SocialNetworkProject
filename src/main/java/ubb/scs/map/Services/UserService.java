@@ -3,22 +3,27 @@ package ubb.scs.map.Services;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
 import ubb.scs.map.Repository.Repository;
+import ubb.scs.map.Repository.database.PagingRepository;
+import ubb.scs.map.Utils.Paging.Page;
+import ubb.scs.map.Utils.Paging.Pageable;
 import ubb.scs.map.Utils.observer.Observable;
 import ubb.scs.map.Utils.observer.Observer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
 public class UserService implements EntityService<Long, User>,
         Observable {
 
-    private final Repository<Long,User> repository;
+    private final PagingRepository<Long,User> repository;
     private final List<Observer> observers = new ArrayList<>();
 
-    public UserService(Repository<Long,User> repository) {
+    public UserService(PagingRepository<Long,User> repository) {
         this.repository = repository;
     }
 
@@ -82,11 +87,15 @@ public class UserService implements EntityService<Long, User>,
         return EntityService.super.getAll();
     }
 
+
     @Override
     public Optional<User> getById(Long entityId) {
         return EntityService.super.getById(entityId);
     }
 
+    public Page<User> findAllOnPage(Pageable pageable) {
+        return repository.findAllOnPage(pageable);
+    }
     @Override
     public void addObserver(Observer e) {
         observers.add(e);

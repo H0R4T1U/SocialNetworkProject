@@ -107,16 +107,30 @@
 
 /* TableView */
 .styled-table {
-    -fx-base: #2c2f33;
     -fx-control-inner-background: #2c2f33;
-    -fx-table-cell-border-color: #45494e;
+    -fx-text-fill: #ffffff;
     -fx-border-color: #45494e;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
 }
 
-.table-column {
+.styled-table .column-header-background {
     -fx-background-color: #45494e;
+}
+
+.styled-table .table-cell {
     -fx-text-fill: #ffffff;
-    -fx-font-weight: bold;
+    -fx-background-color: transparent; /* Default background */
+}
+
+.styled-table .table-row-cell:selected {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: #ffffff;
+}
+
+.styled-table .table-row-cell:focused:selected {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: #ffffff;
 }
 
 /* ButtonBar */

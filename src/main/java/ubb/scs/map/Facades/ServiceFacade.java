@@ -2,12 +2,18 @@ package ubb.scs.map.Facades;
 
 import ubb.scs.map.Domain.*;
 import ubb.scs.map.Services.*;
+import ubb.scs.map.Utils.Paging.Page;
+import ubb.scs.map.Utils.Paging.Pageable;
 import ubb.scs.map.Utils.observer.ObservableType;
 import ubb.scs.map.Utils.observer.Observer;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class ServiceFacade {
     private final UserService userService;
@@ -42,10 +48,9 @@ public class ServiceFacade {
         this.screenService.switchScene(name);
     }
 
-    public Iterable<User> getAllUsers() {
-        return userService.getAll();
+    public Page<User> getUsersPaged(Pageable page){
+        return userService.findAllOnPage(page);
     }
-
     public Optional<User> getUserById(Long id) {
         return userService.getById(id);
     }
@@ -76,8 +81,20 @@ public class ServiceFacade {
     public Optional<Friendship> deleteFriendship(Tuple<Long,Long> id){
         return friendshipService.delete(id);
     }
+    public Page<Friendship> getUserFriendsPaged(Pageable page){
+        return friendshipService.findAllOnPage(page);
+    }
+    public List<User> getUsersNotFriends(Long id){
+        List<Friendship> friends = getUserFriends(id);
+        Set<Long> friendshipIds = friends.stream()
+                .flatMap(friendship -> Stream.of(friendship.getId().getE1(), friendship.getId().getE2()))
+                .collect(Collectors.toSet());
 
+        return StreamSupport.stream(userService.getAll().spliterator(), false)
+                .filter(user -> !friendshipIds.contains(user.getId()))
+                .toList();
 
+    }
     public Iterable<FriendshipRequest> getRequestsForUser(User user){
      return friendshipRequestService.getRequestsForUser(user);
     }

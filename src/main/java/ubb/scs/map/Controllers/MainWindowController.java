@@ -3,20 +3,29 @@ package ubb.scs.map.Controllers;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ubb.scs.map.Domain.*;
+import ubb.scs.map.Utils.Paging.Page;
+import ubb.scs.map.Utils.Paging.Pageable;
 import ubb.scs.map.Utils.observer.ObservableType;
 import ubb.scs.map.Utils.observer.Observer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class MainWindowController extends ControllerSuperclass implements Observer{
     private final ObservableList<Friendship> model = FXCollections.observableArrayList();
+    public Button buttonPrevious;
+    public Label labelPageNumber;
+    public Button buttonNext;
     private ObservableList<User> userModel = FXCollections.observableArrayList();
-
+    private Integer currentPageNumber;
+    private Integer maximumPageNumber;
     @FXML
     private ListView<User> userList;
 
@@ -30,6 +39,8 @@ public class MainWindowController extends ControllerSuperclass implements Observ
     public void init() {
         service.addObserver(this, ObservableType.FRIENDSHIP);
         service.addObserver(this, ObservableType.USER);
+        currentPageNumber = 1;
+        maximumPageNumber = ((int) Math.ceil((double) service.getUserFriends(UserInstance.getInstance().getId()).size() / 3));
 
         initModel();
         Optional<User> user = service.getUserById(UserInstance.getInstance().getId());
@@ -70,22 +81,28 @@ public class MainWindowController extends ControllerSuperclass implements Observ
                 }
             }
         });
-        userModel = FXCollections.observableArrayList();
+
+
         userList.setItems(userModel);
-        userModel.clear();
-        service.getAllUsers().forEach(usr -> {
-            userModel.add(usr);
-        });
-        userList.setItems(userModel);
+    }
+    private void reloadTable() {
+        Pageable pageable = new Pageable(3, currentPageNumber);
+        Page<Friendship> currentPage = new Page<>(service.getUserFriendsPaged(pageable).getElementsOnPage());
+        model.clear();
+        ObservableList<Friendship> friendships = FXCollections.observableList(
+                StreamSupport.stream(currentPage.getElementsOnPage().spliterator(), false)
+                        .toList());
+        model.addAll(friendships);
+        labelPageNumber.setText("Page " + currentPageNumber + " of "+ maximumPageNumber);
+        buttonPrevious.setDisable(currentPageNumber == 1);
+        buttonNext.setDisable(Objects.equals(currentPageNumber, maximumPageNumber));
     }
 
     private void initModel() {
-        List<Friendship> friends = service.getUserFriends(UserInstance.getInstance().getId());
-        List<User> users = (List<User>) service.getAllUsers();
-        model.setAll(friends);
-        userModel.setAll(users);
-
-
+        List<User> users = service.getUsersNotFriends(UserInstance.getInstance().getId());
+        userModel.clear();
+        userModel.addAll(users);
+        reloadTable();
     }
 
     @Override
@@ -106,10 +123,9 @@ public class MainWindowController extends ControllerSuperclass implements Observ
     }
     @FXML
     protected void addFriend() throws IOException {
-        String user = searchBar.getText();
         searchBar.clear();
         Optional<User> snd = service.getUserById(UserInstance.getInstance().getId());
-        Optional<User> rcv = service.getUserByName(user);
+        Optional<User> rcv = Optional.ofNullable(userList.getSelectionModel().getSelectedItem());
         try {
             if (rcv.isPresent() && snd.isPresent()) {
                 service.createFriendshipRequest(snd.get(), rcv.get());
@@ -125,5 +141,15 @@ public class MainWindowController extends ControllerSuperclass implements Observ
     @FXML
     protected void toMessages() throws IOException {
         service.switchScene("messages");
+    }
+
+    public void handleButtonPreviousClicked(ActionEvent actionEvent) {
+        currentPageNumber--;
+        reloadTable();
+    }
+
+    public void handleButtonNextClicked(ActionEvent actionEvent) {
+        currentPageNumber++;
+        reloadTable();
     }
 }

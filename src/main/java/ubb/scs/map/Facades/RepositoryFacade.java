@@ -6,15 +6,12 @@ import ubb.scs.map.Domain.validators.FriendshipValidator;
 import ubb.scs.map.Domain.validators.MessageValidator;
 import ubb.scs.map.Domain.validators.UserValidator;
 import ubb.scs.map.Repository.Repository;
-import ubb.scs.map.Repository.database.FriendshipDatabaseRepository;
-import ubb.scs.map.Repository.database.FriendshipRequestDatabaseRepository;
-import ubb.scs.map.Repository.database.MessageDatabaseRepository;
-import ubb.scs.map.Repository.database.UserDatabaseRepository;
+import ubb.scs.map.Repository.database.*;
 import ubb.scs.map.Services.Configs.ApplicationContext;
 
 public class RepositoryFacade {
-    private final Repository<Long, User> userRepository;
-    private final Repository<Tuple<Long, Long>, Friendship> friendshipRepository;
+    private final PagingRepository<Long, User> userRepository;
+    private final PagingRepository<Tuple<Long, Long>, Friendship> friendshipRepository;
     private final Repository<Tuple<Long, Long>, FriendshipRequest> friendshipRequestRepository;
     private final Repository<Long, Message> messageRepository;
     private static RepositoryFacade instance = null;
@@ -51,11 +48,11 @@ public class RepositoryFacade {
         return instance;
     }
 
-    public Repository<Long, User> getUserRepository() {
+    public PagingRepository<Long, User> getUserRepository() {
         return userRepository;
     }
 
-    public Repository<Tuple<Long, Long>, Friendship> getFriendshipRepository() {
+    public PagingRepository<Tuple<Long, Long>, Friendship> getFriendshipRepository() {
         return friendshipRepository;
     }
 

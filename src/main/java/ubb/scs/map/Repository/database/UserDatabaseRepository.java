@@ -2,6 +2,8 @@ package ubb.scs.map.Repository.database;
 
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.validators.Validator;
+import ubb.scs.map.Utils.Paging.Page;
+import ubb.scs.map.Utils.Paging.Pageable;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
+public class UserDatabaseRepository extends DatabaseRepository<Long, User> implements PagingRepository<Long, User> {
 
     public UserDatabaseRepository(String url, String username, String password, Validator<User> validator) {
         super(url, username, password, validator);
@@ -99,5 +101,19 @@ public class UserDatabaseRepository extends DatabaseRepository<Long, User> {
         User user =  new User(resultSet.getString(2), resultSet.getString(3),resultSet.getString(4), LocalDateTime.parse(resultSet.getString(6)),resultSet.getInt(5));
         user.setId(resultSet.getLong(1));
         return user;
+    }
+
+    @Override
+    public Page<User> findAllOnPage(Pageable pageable) {
+        List<User> entities = new ArrayList<>();
+            try (Connection connection = prepareConnection();
+                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM \"User\" limit " + pageable.getPageSize() + " OFFSET " + (pageable.getPageNumber() - 1) * pageable.getPageSize());
+                 ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next())
+                    entities.add(createUser(resultSet));
+            } catch (SQLException e) {
+                throw new RuntimeException("Database error: " + e.getMessage(), e);
+            }
+            return new Page<>(entities);
     }
 }
