@@ -1,5 +1,6 @@
 package ubb.scs.map.Services;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
 import ubb.scs.map.Repository.Repository;
@@ -33,10 +34,10 @@ public class UserService implements EntityService<Long, User>,
         return StreamSupport.stream(getAll().spliterator(), false).filter(user -> user.getUsername().equals(username)).findFirst();
     }
     public boolean login(String username, String password) {
-
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Optional<User> user = findByUsername(username);
         if (user.isPresent()) {
-            if(user.get().getPassword().equals(password)) {
+            if(encoder.matches(password, user.get().getPassword())) {
                 UserInstance.getInstance().setId(user.get().getId());
                 UserInstance.getInstance().setUsername(username);
                 return true;

@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import ubb.scs.map.Domain.MessageAlert;
 import ubb.scs.map.Domain.User;
 import ubb.scs.map.Domain.UserInstance;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class RegisterController extends ControllerSuperclass {
         ageField.clear();
         PhoneNumberField.clear();
         
-        Optional<User> created = service.createUser(new User(name, password, phoneNumber, LocalDateTime.now() ,age));
+        Optional<User> created = service.createUser(new User(name, new BCryptPasswordEncoder().encode(password), phoneNumber, LocalDateTime.now() ,age));
         if(created.isPresent()) {
             if(service.login(name,password)){
                 service.switchScene("main");

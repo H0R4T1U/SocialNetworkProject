@@ -1,3 +1,10 @@
 # Social Network Project made in java to cement my OOP and Software Engineering knowledge
 
-## Soon: JavaFX gui
+#
+## To do:
+- <s>GUI
+- Login/Register
+- AddFriends
+- Messaging System
+- Password Hashing </s>
+- Profile Page 

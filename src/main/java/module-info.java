@@ -4,6 +4,7 @@ module ubb.scs.map {
     requires javafx.fxml;
     requires javafx.graphics;
     requires org.jgrapht.core;
+    requires spring.security.crypto;
 
     opens ubb.scs.map to javafx.fxml;
     exports ubb.scs.map to javafx.graphics;
