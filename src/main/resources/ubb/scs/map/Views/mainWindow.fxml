@@ -51,16 +51,23 @@
         <!-- Bottom Pane -->
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="466.0" prefWidth="783.0" styleClass="action-section">
             <VBox spacing="10">
-                <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="10">
-                    <Label prefHeight="28.0" prefWidth="245.0" text="Routes:" />
-                    <Button minWidth="165.0" mnemonicParsing="false" onAction="#toRequests" prefHeight="50.0" prefWidth="245.0" styleClass="default-button" text="Requests">
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="48.0" prefWidth="783.0" spacing="10">
+                    <Label prefHeight="29.0" prefWidth="77.0" text="Routes:" />
+               <Button layoutX="279.0" layoutY="10.0" minWidth="165.0" mnemonicParsing="false" onAction="#toProfile" prefHeight="50.0" prefWidth="220.0" styleClass="default-button" text="Profile">
+                  <graphic>
+                      <ImageView fitHeight="20.0" fitWidth="20.0">
+                          <Image url="@../icons/user.png"/>
+                      </ImageView>
+                  </graphic>
+               </Button>
+                    <Button minWidth="165.0" mnemonicParsing="false" onAction="#toRequests" prefHeight="50.0" prefWidth="220.0" styleClass="default-button" text="Requests">
                         <graphic>
                             <ImageView fitHeight="20.0" fitWidth="20.0">
                                 <Image url="@../icons/users.png" />
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button minWidth="165.0" mnemonicParsing="false" onAction="#toMessages" prefHeight="50.0" prefWidth="245.0" styleClass="default-button" text="Messages">
+                    <Button minWidth="165.0" mnemonicParsing="false" onAction="#toMessages" prefHeight="50.0" prefWidth="220.0" styleClass="default-button" text="Messages">
                         <graphic>
                             <ImageView fitHeight="20.0" fitWidth="20.0">
                                 <Image url="@../icons/envelope-dot.png" />

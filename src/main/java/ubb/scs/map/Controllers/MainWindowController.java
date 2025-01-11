@@ -95,7 +95,7 @@ public class MainWindowController extends ControllerSuperclass implements Observ
         model.addAll(friendships);
         labelPageNumber.setText("Page " + currentPageNumber + " of "+ maximumPageNumber);
         buttonPrevious.setDisable(currentPageNumber == 1);
-        buttonNext.setDisable(Objects.equals(currentPageNumber, maximumPageNumber));
+        buttonNext.setDisable(currentPageNumber>= maximumPageNumber);
     }
 
     private void initModel() {
@@ -151,5 +151,9 @@ public class MainWindowController extends ControllerSuperclass implements Observ
     public void handleButtonNextClicked(ActionEvent actionEvent) {
         currentPageNumber++;
         reloadTable();
+    }
+    @FXML
+    protected void toProfile() {
+        service.switchScene("profile");
     }
 }

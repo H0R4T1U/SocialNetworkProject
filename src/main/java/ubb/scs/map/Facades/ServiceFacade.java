@@ -89,7 +89,7 @@ public class ServiceFacade {
         Set<Long> friendshipIds = friends.stream()
                 .flatMap(friendship -> Stream.of(friendship.getId().getE1(), friendship.getId().getE2()))
                 .collect(Collectors.toSet());
-
+        friendshipIds.add(id); // Add Current user id to the list of ids to be filtered
         return StreamSupport.stream(userService.getAll().spliterator(), false)
                 .filter(user -> !friendshipIds.contains(user.getId()))
                 .toList();
